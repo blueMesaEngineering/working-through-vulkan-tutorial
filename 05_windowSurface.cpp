@@ -53,8 +53,10 @@ VkResult CreateDebugUtilsMessengerEXT(	  VkInstance instance
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
+//  Name:           DestroyDebugUtilsMessengerEXT
+//  Arguments:      VkInstance instance
+//				   , VkDebugUtilsMessengerEXT debugMessenger
+//				   , const VkAllocationCallbacks* pAllocator
 //  Description:
 // 
 //******************************************************************************************
@@ -74,8 +76,9 @@ void DestroyDebugUtilsMessengerEXT(  VkInstance instance
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
+//  Name:           QueueFamilyIndices
+//  Arguments:      graphicsFamily
+//                  presentFamily
 //  Description:
 // 
 //******************************************************************************************
@@ -92,7 +95,7 @@ struct QueueFamilyIndices {
 
 //******************************************************************************************
 // 
-//  Name:
+//  Name:           HelloTriangleApplication
 //  Arguments:
 //  Description:
 // 
@@ -105,9 +108,9 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           run
+//  Arguments:      N/A
+//  Description:    Provides the next level down for the control flow of the application.
 // 
 //******************************************************************************************
     
@@ -135,9 +138,10 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           initWindow
+//  Arguments:      N/A
+//  Description:    Calls glfw functions to initialize a window to be displayed 
+//                  on the screen.
 // 
 //******************************************************************************************
 
@@ -154,9 +158,9 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           initVulkan
+//  Arguments:      N/A
+//  Description:    Control structure for initializing the Vulkan framework.
 // 
 //******************************************************************************************
 
@@ -171,9 +175,10 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           mainLoop
+//  Arguments:      N/A
+//  Description:    Checks events acted on the window (for now...).  Checks to see if 
+//                  window is closed.
 // 
 //******************************************************************************************
 
@@ -188,9 +193,10 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           cleanup
+//  Arguments:      N/A
+//  Description:    Garbage collection for destroying instances of Vulkan objects and
+//                  GLFW objects. 
 // 
 //******************************************************************************************
 
@@ -219,9 +225,10 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           createInstance
+//  Arguments:      N/A
+//  Description:    Creates an instance of a Vulkan object. Provides initialization 
+//                  parameters for the Vulkan object, especially appInfo and createInfo.
 // 
 //******************************************************************************************
 
@@ -269,9 +276,9 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           populateDebugMessengerCreateInfo
+//  Arguments:      VkDebugUtilsMessengerCreateInfoEXT& createInfo
+//  Description:    Initializes debug messenger used in the validation layers.
 // 
 //******************************************************************************************
 	
@@ -290,9 +297,10 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           setupDebugMessenger
+//  Arguments:      N/A
+//  Description:    If validation layers are enabled, declares createInfo so that the
+//                  debug messenger can be initialized for debugging. 
 // 
 //******************************************************************************************
         
@@ -302,20 +310,21 @@ class HelloTriangleApplication
             VkDebugUtilsMessengerCreateInfoEXT createInfo;
             populateDebugMessengerCreateInfo(createInfo);
             
-            if (CreateDebugUtilsMessengerEXT(instance
-                            , &createInfo
-                            , nullptr
-                            , &debugMessenger) != VK_SUCCESS) {
-            throw std::runtime_error("Failed to set up debug messenger!");
+            if (CreateDebugUtilsMessengerEXT(  instance
+                                             , &createInfo
+                                             , nullptr
+                                             , &debugMessenger) != VK_SUCCESS) {
+                throw std::runtime_error("Failed to set up debug messenger!");
             }
         }
 
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           createSurface
+//  Arguments:      N/A
+//  Description:    Must be an OpenGL thing. An OpenGL window needs a surface to draw on.
+//                  Or some such.
 // 
 //******************************************************************************************
 
@@ -331,26 +340,26 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           pickPhysicalDevice
+//  Arguments:      N/A
+//  Description:    Checks for physical devices (graphics cards) which have Vulkan support.
 // 
 //******************************************************************************************
 
         void pickPhysicalDevice() {
             uint32_t deviceCount = 0;
-            vkEnumeratePhysicalDevices(  instance
-                                    , &deviceCount
-                                    , nullptr);
+            vkEnumeratePhysicalDevices(   instance
+                                        , &deviceCount
+                                        , nullptr);
 
             if (deviceCount == 0) {
                 throw std::runtime_error("Failed to find GPUs with Vulkan support!");
             }
 
             std::vector<VkPhysicalDevice> devices(deviceCount);
-            vkEnumeratePhysicalDevices(  instance
-                                    , &deviceCount
-                                    , devices.data());
+            vkEnumeratePhysicalDevices(   instance
+                                        , &deviceCount
+                                        , devices.data());
 
             for (const auto& device : devices) {
                 if (isDeviceSuitable(device)) {
@@ -367,9 +376,9 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           createLogicalDevice
+//  Arguments:      N/A
+//  Description:    
 // 
 //******************************************************************************************
 
@@ -454,8 +463,8 @@ class HelloTriangleApplication
 
             std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
             vkGetPhysicalDeviceQueueFamilyProperties(  device
-                                                    , &queueFamilyCount
-                                                    , queueFamilies.data());
+                                                     , &queueFamilyCount
+                                                     , queueFamilies.data());
 
             int i = 0;
             for (const auto& queueFamily : queueFamilies) {
@@ -465,9 +474,9 @@ class HelloTriangleApplication
 
                 VkBool32 presentSupport = false;
                 vkGetPhysicalDeviceSurfaceSupportKHR(  device
-                                                    , i
-                                                    , surface
-                                                    , &presentSupport);
+                                                     , i
+                                                     , surface
+                                                     , &presentSupport);
 
                 if (presentSupport) {
                     indices.presentFamily = i;
@@ -497,7 +506,7 @@ class HelloTriangleApplication
             const char** glfwExtensions;
                 glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
             std::vector<const char*> extensions(  glfwExtensions
-                            , glfwExtensions + glfwExtensionCount);
+                                                , glfwExtensions + glfwExtensionCount);
                             
             if (enableValidationLayers) {
                 extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
@@ -518,18 +527,18 @@ class HelloTriangleApplication
         bool checkValidationLayerSupport() {
             uint32_t layerCount;
             vkEnumerateInstanceLayerProperties(   &layerCount
-                            , nullptr);
+                                                , nullptr);
                             
             std::vector<VkLayerProperties> availableLayers(layerCount);
             vkEnumerateInstanceLayerProperties(   &layerCount
-                            , availableLayers.data());
+                                                , availableLayers.data());
             
             for (const char* layerName : validationLayers) {
                 bool layerFound = false;
                 
                 for (const auto& layerProperties : availableLayers) {
                     if (strcmp(   layerName
-                        , layerProperties.layerName) == 0) {
+                                , layerProperties.layerName) == 0) {
                             layerFound = true;
                             break;
                         }
@@ -551,10 +560,10 @@ class HelloTriangleApplication
 // 
 //******************************************************************************************
         
-        static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity
-                                    , VkDebugUtilsMessageTypeFlagsEXT messageType
-                                    , const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData
-                                    , void* pUserData) {
+        static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(  VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity
+                                                            , VkDebugUtilsMessageTypeFlagsEXT messageType
+                                                            , const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData
+                                                            , void* pUserData) {
             std::cerr << "Validation layer: " << pCallbackData->pMessage << std::endl;
             
             return VK_FALSE;

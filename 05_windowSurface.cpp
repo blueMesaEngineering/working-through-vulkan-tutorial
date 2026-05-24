@@ -12,7 +12,8 @@
 const uint32_t WIDTH = 800;
 const uint32_t HEIGHT = 600;
 
-const std::vector<const char*> validationLayers = {
+const std::vector<const char*> validationLayers = 
+{
     "VK_LAYER_KHRONOS_validation"
 };
 
@@ -37,16 +38,20 @@ const bool enableValidationLayers = true;
 VkResult CreateDebugUtilsMessengerEXT(	  VkInstance instance
                                         , const VkDebugUtilsMessengerCreateInfoEXT* pCreateInfo
                                         , const VkAllocationCallbacks* pAllocator
-                                        , VkDebugUtilsMessengerEXT* pDebugMessenger) {
-    auto func = (PFN_vkCreateDebugUtilsMessengerEXT) vkGetInstanceProcAddr(  instance
-									   , "vkCreateDebugUtilsMessengerEXT");
-    if (func != nullptr) {
-	return func(  instance
-		    , pCreateInfo
-		    , pAllocator
-		    , pDebugMessenger);
-    } else {
-	return VK_ERROR_EXTENSION_NOT_PRESENT;
+                                        , VkDebugUtilsMessengerEXT* pDebugMessenger) 
+                                        {
+    auto func = (PFN_vkCreateDebugUtilsMessengerEXT) vkGetInstanceProcAddr(   instance
+									                                        , "vkCreateDebugUtilsMessengerEXT");
+    if (func != nullptr) 
+    {
+        return func(  instance
+                    , pCreateInfo
+                    , pAllocator
+                    , pDebugMessenger);
+    } 
+    else 
+    {
+	    return VK_ERROR_EXTENSION_NOT_PRESENT;
     }
 }
 
@@ -55,18 +60,20 @@ VkResult CreateDebugUtilsMessengerEXT(	  VkInstance instance
 // 
 //  Name:           DestroyDebugUtilsMessengerEXT
 //  Arguments:      VkInstance instance
-//				   , VkDebugUtilsMessengerEXT debugMessenger
-//				   , const VkAllocationCallbacks* pAllocator
+//				    VkDebugUtilsMessengerEXT debugMessenger
+//				    const VkAllocationCallbacks* pAllocator
 //  Description:
 // 
 //******************************************************************************************
 
 void DestroyDebugUtilsMessengerEXT(  VkInstance instance
 				   , VkDebugUtilsMessengerEXT debugMessenger
-				   , const VkAllocationCallbacks* pAllocator) {
+				   , const VkAllocationCallbacks* pAllocator) 
+                   {
     auto func = (PFN_vkDestroyDebugUtilsMessengerEXT) vkGetInstanceProcAddr(  instance
-									    , "vkDestroyDebugUtilsMessengerEXT");
-    if(func != nullptr) {
+									                                        , "vkDestroyDebugUtilsMessengerEXT");
+    if(func != nullptr) 
+    {
 		func( instance
 			, debugMessenger
 			, pAllocator);
@@ -83,11 +90,13 @@ void DestroyDebugUtilsMessengerEXT(  VkInstance instance
 // 
 //******************************************************************************************
 
-struct QueueFamilyIndices {
+struct QueueFamilyIndices 
+{
 	std::optional<uint32_t> graphicsFamily;
     std::optional<uint32_t> presentFamily;
 	
-	bool isComplete() {
+	bool isComplete() 
+    {
 		return graphicsFamily.has_value() && presentFamily.has_value();
 	}
 };
@@ -149,10 +158,16 @@ class HelloTriangleApplication
         {
             glfwInit();
 
-            glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-            glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+            glfwWindowHint(   GLFW_CLIENT_API
+                            , GLFW_NO_API);
+            glfwWindowHint(   GLFW_RESIZABLE
+                            , GLFW_FALSE);
 
-            window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan", nullptr, nullptr);
+            window = glfwCreateWindow(  WIDTH
+                                      , HEIGHT
+                                      , "Vulkan"
+                                      , nullptr
+                                      , nullptr);
         }
 
 
@@ -205,7 +220,8 @@ class HelloTriangleApplication
 			vkDestroyDevice(  device
 							, nullptr);
 
-			if (enableValidationLayers) {
+			if (enableValidationLayers) 
+            {
 				DestroyDebugUtilsMessengerEXT(  instance
 											  , debugMessenger
 											  , nullptr);
@@ -232,8 +248,10 @@ class HelloTriangleApplication
 // 
 //******************************************************************************************
 
-        void createInstance() {
-			if (enableValidationLayers && !checkValidationLayerSupport()) {
+        void createInstance() 
+        {
+			if (enableValidationLayers && !checkValidationLayerSupport()) 
+            {
 				throw std::runtime_error("Validation layers requested, but not available!");
 			}
 
@@ -254,13 +272,16 @@ class HelloTriangleApplication
 			createInfo.ppEnabledExtensionNames = extensions.data();
 			
 			VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
-			if (enableValidationLayers) {
+			if (enableValidationLayers) 
+            {
 				createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
 				createInfo.ppEnabledLayerNames = validationLayers.data();
 				
 				populateDebugMessengerCreateInfo(debugCreateInfo);
 				createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*) &debugCreateInfo;
-			} else {
+			} 
+            else 
+            {
 				createInfo.enabledLayerCount = 0;
 				
 				createInfo.pNext = nullptr;
@@ -268,7 +289,8 @@ class HelloTriangleApplication
 			
 			if (vkCreateInstance( &createInfo
                                 , nullptr
-                                , &instance) != VK_SUCCESS) {
+                                , &instance) != VK_SUCCESS) 
+            {
 				throw std::runtime_error("Failed to create instance!");
 			}
 		}
@@ -282,7 +304,8 @@ class HelloTriangleApplication
 // 
 //******************************************************************************************
 	
-        void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) {
+        void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo) 
+        {
             createInfo = {};
             createInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
             createInfo.messageSeverity =  VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT 
@@ -304,7 +327,8 @@ class HelloTriangleApplication
 // 
 //******************************************************************************************
         
-        void setupDebugMessenger() {
+        void setupDebugMessenger() 
+        {
             if (!enableValidationLayers) return;
             
             VkDebugUtilsMessengerCreateInfoEXT createInfo;
@@ -313,7 +337,8 @@ class HelloTriangleApplication
             if (CreateDebugUtilsMessengerEXT(  instance
                                              , &createInfo
                                              , nullptr
-                                             , &debugMessenger) != VK_SUCCESS) {
+                                             , &debugMessenger) != VK_SUCCESS) 
+            {
                 throw std::runtime_error("Failed to set up debug messenger!");
             }
         }
@@ -328,13 +353,15 @@ class HelloTriangleApplication
 // 
 //******************************************************************************************
 
-        void createSurface() {
+        void createSurface() 
+        {
             if (glfwCreateWindowSurface(  instance
                                         , window
                                         , nullptr
-                                        , &surface) != VK_SUCCESS) {
-                                            throw std::runtime_error("Failed to create window surface!");
-                                        }
+                                        , &surface) != VK_SUCCESS)
+            {
+                throw std::runtime_error("Failed to create window surface!");
+            }
         }
 
 
@@ -346,13 +373,15 @@ class HelloTriangleApplication
 // 
 //******************************************************************************************
 
-        void pickPhysicalDevice() {
+        void pickPhysicalDevice() 
+        {
             uint32_t deviceCount = 0;
             vkEnumeratePhysicalDevices(   instance
                                         , &deviceCount
                                         , nullptr);
 
-            if (deviceCount == 0) {
+            if (deviceCount == 0) 
+            {
                 throw std::runtime_error("Failed to find GPUs with Vulkan support!");
             }
 
@@ -361,8 +390,10 @@ class HelloTriangleApplication
                                         , &deviceCount
                                         , devices.data());
 
-            for (const auto& device : devices) {
-                if (isDeviceSuitable(device)) {
+            for (const auto& device : devices) 
+            {
+                if (isDeviceSuitable(device)) 
+                {
                     physicalDevice = device;
                     break;
                 }
@@ -378,21 +409,25 @@ class HelloTriangleApplication
 // 
 //  Name:           createLogicalDevice
 //  Arguments:      N/A
-//  Description:    
+//  Description:    A logical device can incorporate multiple physical devices.  So here, 
+//                  a logical device is created with given specifications.
 // 
 //******************************************************************************************
 
-        void createLogicalDevice() {
+        void createLogicalDevice() 
+        {
             QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
 
             std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
-            std::set<uint32_t> uniqueQueueFamilies = {
-                indices.graphicsFamily.value()
+            std::set<uint32_t> uniqueQueueFamilies = 
+            {
+                  indices.graphicsFamily.value()
                 , indices.presentFamily.value()
             };
             
             float queuePriority = 1.0f;
-            for (uint32_t queueFamily : uniqueQueueFamilies) {
+            for (uint32_t queueFamily : uniqueQueueFamilies) 
+            {
                 VkDeviceQueueCreateInfo queueCreateInfo{};
                 queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
                 queueCreateInfo.queueFamilyIndex = queueFamily;
@@ -413,53 +448,60 @@ class HelloTriangleApplication
 
             createInfo.enabledExtensionCount = 0;
 
-            if (enableValidationLayers) {
+            if (enableValidationLayers) 
+            {
                 createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
                 createInfo.ppEnabledLayerNames = validationLayers.data();
-            } else {
+            } 
+            else 
+            {
                 createInfo.enabledLayerCount = 0;
             }
 
             if (vkCreateDevice(   physicalDevice
                                 , &createInfo
                                 , nullptr
-                                , &device) != VK_SUCCESS) {
-                                    throw std::runtime_error("Failed to create logical device!");
-                                }
+                                , &device) != VK_SUCCESS) 
+            {
+                throw std::runtime_error("Failed to create logical device!");
+            }
             
             vkGetDeviceQueue(  device
-                            , indices.graphicsFamily.value()
-                            , 0
-                            , &graphicsQueue);
+                             , indices.graphicsFamily.value()
+                             , 0
+                             , &graphicsQueue);
             
             vkGetDeviceQueue(  device
-                            , indices.presentFamily.value()
-                            , 0
-                            , &presentQueue);
+                             , indices.presentFamily.value()
+                             , 0
+                             , &presentQueue);
         }
 
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           isDeviceSuitable
+//  Arguments:      VkPhysicalDevice device
+//  Description:    Checks to see if a physical device is suitable for Vulkan - that is, if
+//                  the physical device is supported.
 // 
 //******************************************************************************************
 
-        bool isDeviceSuitable(VkPhysicalDevice device) {
+        bool isDeviceSuitable(VkPhysicalDevice device) 
+        {
             QueueFamilyIndices indices = findQueueFamilies(device);
 
             return indices.isComplete();
         }
 
-        QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
+        QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) 
+        {
             QueueFamilyIndices indices;
 
             uint32_t queueFamilyCount = 0;
             vkGetPhysicalDeviceQueueFamilyProperties(  device
-                                                    , &queueFamilyCount
-                                                    , nullptr);
+                                                     , &queueFamilyCount
+                                                     , nullptr);
 
             std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
             vkGetPhysicalDeviceQueueFamilyProperties(  device
@@ -468,7 +510,8 @@ class HelloTriangleApplication
 
             int i = 0;
             for (const auto& queueFamily : queueFamilies) {
-                if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+                if (queueFamily.queueFlags & VK_QUEUE_GRAPHICS_BIT) 
+                {
                     indices.graphicsFamily = i;
                 }
 
@@ -478,11 +521,13 @@ class HelloTriangleApplication
                                                      , surface
                                                      , &presentSupport);
 
-                if (presentSupport) {
+                if (presentSupport) 
+                {
                     indices.presentFamily = i;
                 }
 
-                if (indices.isComplete()) {
+                if (indices.isComplete()) 
+                {
                     break;
                 }
 
@@ -495,20 +540,28 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           getRequiredExtensions
+//  Arguments:      N/A
+//  Description:    Calls the GLFW function glfwGetRequiredInstanceExtensions in order
+//                  to create a surface, According to the GLFW documentation, this "function 
+//                  returns an array of names of Vulkan instance extensions required by GLFW 
+//                  for creating Vulkan surfaces for GLFW windows. If successful, the list 
+//                  will always contain VK_KHR_surface, so if you don't require any 
+//                  additional extensions you can pass this list directly to the 
+//                  VkInstanceCreateInfo struct."
 // 
 //******************************************************************************************
-        
-        std::vector<const char*> getRequiredExtensions() {
+
+        std::vector<const char*> getRequiredExtensions() 
+        {
             uint32_t glfwExtensionCount = 0;
             const char** glfwExtensions;
-                glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+            glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
             std::vector<const char*> extensions(  glfwExtensions
                                                 , glfwExtensions + glfwExtensionCount);
                             
-            if (enableValidationLayers) {
+            if (enableValidationLayers) 
+            {
                 extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
             }
             
@@ -518,13 +571,14 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
-//  Description:
+//  Name:           checkValidationLayerSupport
+//  Arguments:      N/A
+//  Description:    Checks for the number of available layers for a particular instance.
 // 
 //******************************************************************************************
         
-        bool checkValidationLayerSupport() {
+        bool checkValidationLayerSupport() 
+        {
             uint32_t layerCount;
             vkEnumerateInstanceLayerProperties(   &layerCount
                                                 , nullptr);
@@ -533,18 +587,22 @@ class HelloTriangleApplication
             vkEnumerateInstanceLayerProperties(   &layerCount
                                                 , availableLayers.data());
             
-            for (const char* layerName : validationLayers) {
+            for (const char* layerName : validationLayers) 
+            {
                 bool layerFound = false;
                 
-                for (const auto& layerProperties : availableLayers) {
+                for (const auto& layerProperties : availableLayers) 
+                {
                     if (strcmp(   layerName
-                                , layerProperties.layerName) == 0) {
-                            layerFound = true;
-                            break;
-                        }
+                                , layerProperties.layerName) == 0) 
+                    {
+                        layerFound = true;
+                        break;
+                    }
                 }
 
-                if (!layerFound) {
+                if (!layerFound) 
+                {
                     return false;
                 }
             }
@@ -554,8 +612,11 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:
-//  Arguments:
+//  Name:           debugCallback
+//  Arguments:      VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity
+//                  VkDebugUtilsMessageTypeFlagsEXT messageType
+//                  const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData
+//                  void* pUserData
 //  Description:
 // 
 //******************************************************************************************
@@ -563,7 +624,8 @@ class HelloTriangleApplication
         static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(  VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity
                                                             , VkDebugUtilsMessageTypeFlagsEXT messageType
                                                             , const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData
-                                                            , void* pUserData) {
+                                                            , void* pUserData) 
+        {
             std::cerr << "Validation layer: " << pCallbackData->pMessage << std::endl;
             
             return VK_FALSE;

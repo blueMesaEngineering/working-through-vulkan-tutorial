@@ -1,8 +1,8 @@
 CFLAGS = -std=c++17 -O2
 LDFLAGS = -lglfw -lvulkan -ldl -lpthread -lX11 -lXxf86vm -lXrandr -lXi
 
-VulkanTest: test.cpp
-	g++ $(CFLAGS) -o VulkanTest test.cpp $(LDFLAGS)
+VulkanTest: 06_swapChainCreation.cpp
+	g++ $(CFLAGS) -o VulkanTest 06_swapChainCreation.cpp $(LDFLAGS)
 
 .PHONY: test clean
 

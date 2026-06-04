@@ -585,7 +585,7 @@ class HelloTriangleApplication
 
 //******************************************************************************************
 // 
-//  Name:           
+//  Name:           createSwapChain
 //  Arguments:
 //  Description:
 // 
@@ -1244,7 +1244,7 @@ void createRenderPass()
 
 //******************************************************************************************
 // 
-//  Name:           
+//  Name:           chooseSwapExtent
 //  Arguments:
 //  Description:
 // 
@@ -1284,7 +1284,7 @@ void createRenderPass()
 
 //******************************************************************************************
 // 
-//  Name:           
+//  Name:           querySwapChainSupport
 //  Arguments:
 //  Description:
 // 
@@ -1301,7 +1301,7 @@ void createRenderPass()
             uint32_t formatCount;
             vkGetPhysicalDeviceSurfaceFormatsKHR(  device
                                                  , surface
-                                                 , &formatCount 
+                                                 , &formatCount
                                                  , nullptr);
 
             if (formatCount != 0)
@@ -1360,7 +1360,7 @@ void createRenderPass()
 
 //******************************************************************************************
 // 
-//  Name:           
+//  Name:           checkDeviceExtensionSupport
 //  Arguments:
 //  Description:
 // 
@@ -1392,7 +1392,7 @@ void createRenderPass()
 
 //******************************************************************************************
 // 
-//  Name:           
+//  Name:           findQueueFamilies
 //  Arguments:
 //  Description:
 // 
